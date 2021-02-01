@@ -36,13 +36,19 @@ deploy:
 ### Downloads all dependencies and builds the entire project
 install: get_libs
 
+dbmigrate:
+	$(info  ==============================================================================)
+	$(info  Creates the database to be used for Ruby on Rails)
+	$(info  ==============================================================================)
+	bundle exec rake db:migrate
+
 ### Command: make run
 ### Downloads all depenedencies, bulds entire project and runs the project.
 run:
 	$(info =========================================================================)
 	$(info If this commands fails, run 'make help' and check the "Important" section)
 	$(info =========================================================================)
-	rails s
+	rails s -b 0.0.0.0
 
 
 ### Command: make test

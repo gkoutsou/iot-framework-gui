@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.5.8'
 #ruby-gemset=railstutorial_rails_4_0
 
-gem 'rails', '4.0.0'
+# gem 'rails', '4.0.13'
+# gem 'rails', '4.1.16'
+gem 'rails', '4.2.11.3'
 gem 'her'
 gem 'bootstrap-sass', '~> 3.0.2.0'
-gem 'bcrypt-ruby', '3.0.1'
+gem 'bcrypt-ruby', '3.1.5'
 gem 'httparty'
 gem 'faraday'
 gem 'will_paginate', '~> 3.0'
@@ -24,7 +26,7 @@ gem 'signet', '>=0.4.5'
 
 
 group :development, :test do
-  gem 'sqlite3', '1.3.8'
+  gem 'sqlite3', '1.3.13'
   gem 'rspec-rails', '2.13.1'
 end
 

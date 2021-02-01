@@ -1,17 +1,18 @@
 FROM ubuntu:14.04.2
-MAINTAINER Konstantinos Vandikas (konstantinos.vandikas@ericsson.com)
+# MAINTAINER Konstantinos Vandikas (konstantinos.vandikas@ericsson.com)
 
 #update environment
 RUN apt-get update
 RUN apt-get -yqf upgrade
 
 # install git and checkout source-code from github
-RUN apt-get install -yq git software-properties-common curl wget make
-WORKDIR /opt
-RUN git clone https://github.com/EricssonResearch/iot-framework-gui.git
+RUN apt-get install -yq git software-properties-common wget curl  make
 
 # change workdir
 WORKDIR /opt/iot-framework-gui
+
+
+COPY . .
 
 # install iot-framework-gui
 RUN make install
@@ -22,5 +23,5 @@ RUN make install
 EXPOSE 3000
 
 # Start the Rails server
-#RUN make run
+CMD make run
 

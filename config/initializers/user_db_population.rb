@@ -26,10 +26,10 @@ def authenticate username
 	puts token_url
 
 	puts "\nCopy and type here the Access Token"
-	access_token = gets.chomp
+	access_token = STDIN.gets.chomp
 
 	puts "\nCopy and type here the Refresh Token"
-	refresh_token = gets.chomp
+	refresh_token = STDIN.gets.chomp
 
 	{ refresh_token: refresh_token, access_token: access_token, username: username }
 end
