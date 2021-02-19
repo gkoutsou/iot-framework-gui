@@ -59,6 +59,7 @@ SensorCloud::Application.routes.draw do
   put '/userranking'    => 'searches#update_user_ranking'
   post '/get_more_info' => 'searches#create'
 
+  post '/auth/:provider/callback', to: 'sessions#create'
   get    '/signin'   => 'sessions#new'
   delete '/signout'  => 'sessions#destroy'
 

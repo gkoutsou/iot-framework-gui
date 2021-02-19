@@ -54,7 +54,7 @@ function timeChart() {
         d.timestamp = parseDate(d.timestamp);
         return d;
       });
-      console.log data.data
+      // console.log data.data
       // Calculate the scales
       var x_domain;
       var y_domain;

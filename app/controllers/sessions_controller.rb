@@ -1,48 +1,61 @@
 class SessionsController < ApplicationController
 
 	before_action :gen_openid_state, only: [:new]
+	skip_before_action :verify_authenticity_token, only: :create
 
 	def new
 	end
 
 	def create
-		if current_user
-			logger.debug "current_user"
-			render json: {"url" => "/users/#{current_user.username}/streams"}, status: 200
-		else
-			# Make sure the state set on the client matches the state previously sent in the request (CSRF)
-			if session[:state] != params[:state]
-				logger.debug "state does not match"
-				render json: {"error" => "The client state does not match the server state."}, status: 401
-			else
-				sign_out
-
-				fetch_openid_tokens if not session[:token]
-				user = fetch_user_info
-
-				logger.debug "user"
-				logger.debug user
-
-				if remote_users_exists? user
-					renew_access_token user
-				else
-					ok = store_remotely user
-					# user = if ok then store_locally user else load_from_db user end
-					user = store_locally user
-					unless user
-						logger.debug "ERROR"
-						# redirect_to root_url
-						redirect_to root_path
-					end
-				end
-
-				logger.debug "before sign in"
-				sign_in user
-				logger.debug "after sign in"
-				render json: {"url" => "/users/#{user.username}/streams"}, status: 200
-			end
-		end
+		@user = User.find_or_create_from_auth_hash(auth_hash)
+		self.current_user = @user
+		redirect_to '/'
 	end
+
+	protected
+
+	def auth_hash
+	request.env['omniauth.auth']
+	end
+
+	# def create
+	# 	if current_user
+	# 		logger.debug "current_user"
+	# 		render json: {"url" => "/users/#{current_user.username}/streams"}, status: 200
+	# 	else
+	# 		# Make sure the state set on the client matches the state previously sent in the request (CSRF)
+	# 		if session[:state] != params[:state]
+	# 			logger.debug "state does not match"
+	# 			render json: {"error" => "The client state does not match the server state."}, status: 401
+	# 		else
+	# 			sign_out
+
+	# 			fetch_openid_tokens if not session[:token]
+	# 			user = fetch_user_info
+
+	# 			logger.debug "user"
+	# 			logger.debug user
+
+	# 			if remote_users_exists? user
+	# 				renew_access_token user
+	# 			else
+	# 				ok = store_remotely user
+	# 				# user = if ok then store_locally user else load_from_db user end
+	# 				user = store_locally user
+	# 				unless user
+	# 					logger.debug "ERROR"
+	# 					# redirect_to root_url
+	# 					redirect_to root_path
+	# 				end
+	# 			end
+
+	# 			logger.debug "before sign in"
+	# 			sign_in user
+	# 			logger.debug "after sign in"
+	# 			render json: {"url" => "/users/#{user.username}/streams"}, status: 200
+	# 		end
+	# 	end
+	# end
 
 	def destroy
 		sign_out
@@ -54,11 +67,13 @@ class SessionsController < ApplicationController
 
 		def fetch_openid_tokens
 			# Upgrade the code into a token object.
-			$authorization.code = request.body.read
-			$authorization.fetch_access_token!
-			$client.authorization = $authorization
+			credentials2 = $authorizer.get_credentials_from_code(code: request.body.read)
 
-			id_token = $client.authorization.id_token
+			# $authorization.code = request.body.read
+			access_tokens = credentials2.fetch_access_token!
+			# $client.authorization = $authorization
+
+			id_token = access_tokens.id_token
 			encoded_json_body = id_token.split('.')[1]
 			# Base64 must be a multiple of 4 characters long, trailing with '='
 			encoded_json_body += (['='] * (encoded_json_body.length % 4)).join('')
@@ -67,7 +82,7 @@ class SessionsController < ApplicationController
 
 			# Serialize and store the token in the user's session.
 			token_pair = TokenPair.new
-			token_pair.update_token! $client.authorization
+			token_pair.update_token! $access_tokens
 			session[:token] = token_pair
 			puts "token_pair.to_hash"
 			puts token_pair.to_hash
@@ -76,7 +91,7 @@ class SessionsController < ApplicationController
 		def fetch_user_info
 			# Authorize the client and construct a Google+ service.
 			$client.authorization.update_token! session[:token].to_hash
-			plus = $client.discovered_api 'plus', 'v1'
+			plus = $client.discovered_api 'identity', 'v1'
 
 			# Get the list of people as JSON and return it.
 			response = $client.execute!(plus.people.get,
@@ -98,6 +113,21 @@ class SessionsController < ApplicationController
 			user.private       = false
 			user.access_token  = session[:token].access_token
 			user.refresh_token = session[:token].refresh_token
+			user
+		end
+
+		
+		def useless_user
+			user = User.new
+			user.email         = "abcd@asdasd.com"
+			user.username      = "tuturu"
+			user.firstname     = "tuturu"
+			user.lastname      = "tuturu"
+			user.image_url     = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cat_poster_1.jpg/260px-Cat_poster_1.jpg"
+			user.description   = "asdasd"
+			user.private       = false
+			# user.access_token  = session[:token].access_token
+			# user.refresh_token = session[:token].refresh_token
 			user
 		end
 

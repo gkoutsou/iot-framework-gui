@@ -21,15 +21,19 @@ WORKDIR /usr/src/app
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
-# RUN bundle config --delete frozen & bundle update --patch
+# RUN bundle config --delete frozen && bundle update rails --patch
 # RUN cat Gemfile Gemfile.lock
-
 COPY . .
+
+# RUN bundle exec rake assets:precompile
 
 # modify the API_URL variable
 
 # expose port for rails
 EXPOSE 3000
+# RUN RAILS_ENV=production bundle exec rake --trace assets:precompile
+
+RUN bundle exec rake routes
 
 # Start the Rails server
 CMD make dbmigrate run

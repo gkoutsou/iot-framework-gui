@@ -7,18 +7,43 @@
 		</style>
 		<%= render 'tos' %>
 
+		<%= link_to "Log In with Google", '/auth/google_oauth2' %>
+		<!--
 		<div id="gConnect" style="display:none;">
-			<p class="left">Sign in using Google's Open ID Connect button</p>
-			<div class="signin-btn">
-		    <button class="g-signin"
-	        data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
-	        data-clientId="995342763478-fh8bd2u58n1tl98nmec5jrd76dkbeksq.apps.googleusercontent.com"
-	        data-callback="signinCallback"
-	        data-accesstype="offline"
-	        data-approvalprompt="force"
-	        data-cookiepolicy="single_host_origin">
-		    </button>
-			</div>
-	  </div>
+			<button id="signinButton">Sign in with Google</button>
+			
+			<script>
+				function start() {
+					gapi.load('auth2', function() {
+						auth2 = gapi.auth2.init({
+						client_id: '866433296305-g3ie9ep2pjfk2inqkbacohmqps8rticf.apps.googleusercontent.com',
+						// Scopes to request in addition to 'profile' and 'email'
+						//scope: 'additional_scope'
+						});
+					});
+				}
+				
+				$('#signinButton').click(function() {
+					auth2.grantOfflineAccess().then(signInCallback);
+				});
+			</script>
+		</div>
+		-->
+		<!--
+		# <div id="gConnect" style="display:none;">
+		# 	<p class="left">Sign in using Google's Open ID Connect button</p>
+		# 	<div class="signin-btn">
+		#     <button class="g-signin2"
+	    #     data-scope="profile https://www.googleapis.com/auth/userinfo.email"
+	    #     data-clientId="995342763478-fh8bd2u58n1tl98nmec5jrd76dkbeksq.apps.googleusercontent.com"
+		# 	data-onsuccess="onSignIn"
+		# 	data-onfailure="onSignInFailure"
+	    #     data-accesstype="offline"
+	    #     data-approvalprompt="force"
+	    #     data-cookiepolicy="single_host_origin">
+		#     </button>
+		# 	</div>
+		# </div> 
+		-->
 	</div>
 </div>

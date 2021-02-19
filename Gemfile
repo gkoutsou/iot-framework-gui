@@ -20,9 +20,11 @@ gem 'mail_form', '~> 1.5.0.rc'
 gem 'simple_form', '~> 3.0.0.rc'
 gem 'jquery-star-rating-rails'
 gem 'caroufredsel-rails', :git => 'git://github.com/konstantino/caroufredsel-rails.git'
-gem 'jwt', '~> 0.1.4'
-gem 'google-api-client', '>= 0.6.2', :require => 'google/api_client'
-gem 'signet', '>=0.4.5'
+# gem 'jwt', '~> 2.2.2'
+# gem 'google-api-client', '>= 0.52.0'
+# gem 'signet', '>=0.4.5'
+gem 'omniauth', '~> 2.0.2'
+gem 'omniauth-google-oauth2', '~> 0.8.1'
 
 
 group :development, :test do

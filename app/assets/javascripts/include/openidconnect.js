@@ -16,7 +16,7 @@ var helper = (function() {
       // for (var field in authResult) {
       //   $('#authResult').append(' ' + field + ': ' + authResult[field] + '<br/>');
       // }
-      if (authResult['access_token']) {
+      if (authResult['code']) {
         // The user is signed in
         this.authResult = authResult;
         helper.connectServer();
@@ -82,7 +82,7 @@ $(document).ready(function() {
   var initSignIn = function() {
     var po = document.createElement('script');
     po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://plus.google.com/js/client:plusone.js';
+    po.src = 'https://apis.google.com/js/client:platform.js?onload=start';
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(po, s);
   };
@@ -110,7 +110,12 @@ $(document).ready(function() {
  * @param {Object} authResult An Object which contains the access token and
  *   other authentication information.
  */
-window.signinCallback = function(authResult) {
+window.signInCallback = function(authResult) {
+  console.log('authResult');
+  console.log(authResult);
+
+  // helper.connectServer()
+
   helper.onSignInCallback(authResult);
 }
 

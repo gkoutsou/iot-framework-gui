@@ -50,6 +50,11 @@ run:
 	$(info =========================================================================)
 	rails s -b 0.0.0.0
 
+# run_rails:
+# 	./bin/rais server
+
+# run2:
+# 	bundle exec rackup
 
 ### Command: make test
 ### Runs all test cases.
