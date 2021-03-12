@@ -6,17 +6,23 @@ class SessionsController < ApplicationController
 	def new
 	end
 
+	# todo handle auth failure
+	
 	def create
-		@user = User.find_or_create_from_auth_hash(auth_hash)
-		self.current_user = @user
-		redirect_to '/'
+		# @user = User.find_or_create_from_auth_hash(auth_hash)
+		user = find_or_create_from_auth_hash(auth_hash)
+		self.current_user = user
+		logger.debug "user"
+		logger.debug user
+		redirect_to root_url
 	end
 
 	protected
 
 	def auth_hash
-	request.env['omniauth.auth']
+		request.env['omniauth.auth']
 	end
+	
 
 	# def create
 	# 	if current_user
@@ -100,6 +106,20 @@ class SessionsController < ApplicationController
 
 			json = JSON.parse response.body
 			build_sanitize_user json
+		end
+
+		def find_or_create_from_auth_hash hash
+			user = User.new
+			user.email         = hash["info"]["email"] || ""
+			user.username      = hash["info"]["nickname"] || ""
+			user.firstname     = hash["info"]["first_name"] || ""
+			user.lastname      = hash["info"]["last_name"] || ""
+			user.image_url     = hash["info"]["image"] || ""
+			user.description   = hash["info"]["description"] || ""
+			user.private       = false
+			user.access_token  = hash["credentials"]["token"] || ""
+			user.refresh_token = hash["credentials"]["refresh_token"] || ""
+			user
 		end
 
 		def build_sanitize_user json

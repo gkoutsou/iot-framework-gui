@@ -7,7 +7,10 @@
 		</style>
 		<%= render 'tos' %>
 
-		<%= link_to "Log In with Google", '/auth/google_oauth2' %>
+		<%= link_to "Log In with Google", '/auth/google_oauth2', method: :post %>
+		<br/>
+		<%= link_to "Developer Log In", '/auth/developer', method: :post %>
+		
 		<!--
 		<div id="gConnect" style="display:none;">
 			<button id="signinButton">Sign in with Google</button>
