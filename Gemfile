@@ -4,11 +4,11 @@ ruby '2.5.8'
 
 # gem 'rails', '4.0.13'
 # gem 'rails', '4.1.16'
-gem 'rails', '4.2.11.3'
-# gem 'rails', '5.0.7.2'
-gem 'her'
+# gem 'rails', '4.2.11.3'
+gem 'rails', '5.0.7.2'
+gem 'her', '0.6.8'
 gem 'bootstrap-sass', '~> 3.3.6' ## todo sass is EOL
-gem 'bcrypt-ruby', '3.1.5'
+gem 'bcrypt-ruby', '3.1.5' # potential
 gem 'httparty'
 gem 'faraday', '< 1.0.0' # restricted because of 'her'
 gem 'will_paginate', '~> 3.1'
@@ -18,8 +18,8 @@ gem 'faker', '1.1.2'
 gem "d3-rails", '~> 3.0'
 gem "bootstrap-switch-rails"
 gem 'socket.io-rails'
-gem 'mail_form', '~> 1.5.1'
-gem 'simple_form', '~> 3.1.1'
+gem 'mail_form', '~> 1.7.0'
+gem 'simple_form', '~> 3.4.0'
 # gem 'mail_form', '~> 1.6.0'
 # gem 'simple_form', '~> 5.0.3'
 gem 'jquery-star-rating-rails'
@@ -27,15 +27,14 @@ gem 'caroufredsel-rails', :git => 'git://github.com/konstantino/caroufredsel-rai
 # gem 'jwt', '~> 2.2.2'
 # gem 'google-api-client', '>= 0.52.0'
 # gem 'signet', '>=0.4.5'
-gem 'omniauth', '~> 2.0.2'
+gem 'omniauth', '~> 2.0.2'# potential
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-google-oauth2', '~> 0.8.1'
 
 
 group :development, :test do
   gem 'sqlite3', '1.3.13'
-  gem 'rspec-rails', '3.7.2'
-  # gem 'rspec-rails', '4.0.2'
+  gem 'rspec-rails', '4.1.2' # potential
 end
 
 group :test do
@@ -47,12 +46,12 @@ end
 gem 'sass-rails', '5.0.6'
 gem 'uglifier', '2.1.1'
 gem 'coffee-rails', '4.1.1'
-gem 'jquery-rails', '3.0.4'
+gem 'jquery-rails', '4.4.0'
 # gem 'coffee-rails', '4.1.1'
 # gem 'jquery-rails', '4.0.5'
 gem 'jquery-ui-rails'
-gem 'turbolinks', '1.1.1'
-gem 'jbuilder', '1.0.2'
+gem 'turbolinks', '5.2.1'# potential
+gem 'jbuilder', '1.0.2' # potential
 gem 'therubyracer'
 group :doc do
   gem 'sdoc', '0.3.20', require: false

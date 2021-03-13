@@ -1,4 +1,9 @@
-SensorCloud::Application.routes.draw do
+Rails.application.routes.draw do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+
+# todo gko app:update deleted everything for some reason
+# SensorCloud::Application.routes.draw do
 
   root 'static_pages#home'
 
@@ -60,6 +65,7 @@ SensorCloud::Application.routes.draw do
   post '/get_more_info' => 'searches#create'
 
   post '/auth/:provider/callback', to: 'sessions#create'
+  get '/auth/failure' => 'sessions#failure'
   get    '/signin'   => 'sessions#new'
   delete '/signout'  => 'sessions#destroy'
 

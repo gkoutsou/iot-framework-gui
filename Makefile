@@ -40,7 +40,7 @@ dbmigrate:
 	$(info  ==============================================================================)
 	$(info  Creates the database to be used for Ruby on Rails)
 	$(info  ==============================================================================)
-	bundle exec rake db:migrate
+	rails db:migrate
 
 ### Command: make run
 ### Downloads all depenedencies, bulds entire project and runs the project.
@@ -48,7 +48,7 @@ run:
 	$(info =========================================================================)
 	$(info If this commands fails, run 'make help' and check the "Important" section)
 	$(info =========================================================================)
-	rails s -b 0.0.0.0
+	RAILS_ENV=development rails s -b 0.0.0.0
 
 # run_rails:
 # 	./bin/rais server

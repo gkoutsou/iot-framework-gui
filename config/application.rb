@@ -1,17 +1,13 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
-# Pick the frameworks you want:
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module SensorCloud
+  # todo gko app:update removed this block..
   def self.rake?
     !!@rake
   end
@@ -19,19 +15,14 @@ module SensorCloud
   def self.rake=(value)
     @rake = !!value
   end
+  # ###########################################
   
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
+    # todo gko app:update tried to delete this:
     config.autoload_paths += %W(#{config.root}/lib)
 
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
@@ -51,5 +42,12 @@ module SensorCloud
     		false
   		end
 		end
+    ####################
+
+    # todo the next the lines added due to onmiauth.. Do I need anything? Remove session_store.rb?
+    # https://github.com/omniauth/omniauth#integrating-omniauth-into-your-rails-api
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies # Required for all session management
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
   end
 end

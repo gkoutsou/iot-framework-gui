@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
-
 	before_action :gen_openid_state, only: [:new]
-	skip_before_action :verify_authenticity_token, only: :create
+	skip_before_action :verify_authenticity_token, only: :create, :raise => false
+	# todo raise is a hack cause Before process_action callback :verify_authenticity_token has not been defined
 
 	def new
 	end
@@ -11,11 +11,23 @@ class SessionsController < ApplicationController
 	def create
 		# @user = User.find_or_create_from_auth_hash(auth_hash)
 		user = find_or_create_from_auth_hash(auth_hash)
-		self.current_user = user
+		user.username="gko" #todo remove
+		
+		# todo a lot more logic missing
+		ok = store_remotely user
+
+		sign_in user
 		logger.debug "user"
 		logger.debug user
 		redirect_to root_url
+		# render :text => "OK :-)"
+		# render json: {"url" => "/users/#{user.username}/streams"}, status: 200
 	end
+
+	def failure
+		render :text => "FAILURE :-("
+	end
+	
 
 	protected
 
