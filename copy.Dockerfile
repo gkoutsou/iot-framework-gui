@@ -21,7 +21,8 @@ WORKDIR /usr/src/app
 
 COPY Gemfile Gemfile.lock ./
 # RUN bundle config --delete frozen && bundle update --all --conservative
-RUN bundle install --without test
+RUN bundle install 
+# todo add --without test, then separate image that runs tests..
 # RUN cat Gemfile Gemfile.lock
 COPY . .
 
